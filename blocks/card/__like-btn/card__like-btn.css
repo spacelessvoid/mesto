@@ -1,0 +1,12 @@
+.card__like-btn {
+  min-height: 19px;
+  min-width: 22px;
+  background-image: url(../../../images/button-like.svg);
+  background-size: 22px 19px;
+  transition: all .5s;
+}
+
+.card__like-btn:hover {
+  opacity: .5;
+  transition: all .5s;
+}

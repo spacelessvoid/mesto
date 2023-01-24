@@ -1,8 +1,0 @@
-:root {
-  --clr-background-primary: hsla(0, 0%, 20%, 1);
-  --clr-background-secondary: hsla(0, 0%, 18%, 1);
-  --clr-text-primary: hsla(0, 0%, 100%, 1);
-  --clr-text-secondary: hsla(0, 0%, 90%, 1);
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-}
