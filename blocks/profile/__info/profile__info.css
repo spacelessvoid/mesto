@@ -1,4 +1,25 @@
 .profile__info {
+  max-width: 350px;
   margin-inline-start: 30px;
   color: #fff;
+  position: relative;
+}
+
+@media screen and (max-width: 800px) {
+  .profile__info {
+    margin-inline-start: 15px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .profile__info {
+    margin: 22px 0 0;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile__info {
+    max-width: 280px;
+  }
 }

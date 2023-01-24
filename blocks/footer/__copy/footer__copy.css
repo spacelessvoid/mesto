@@ -2,3 +2,9 @@
   color: #545454;
   line-height: 1.22;
 }
+
+@media screen and (max-width: 500px) {
+  .footer__copy {
+    font-size: 14px;
+  }
+}
