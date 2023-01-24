@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./pages/index.css">
+  <script defer src="./scripts/index.js"></script>
   <title>Mesto Russia</title>
 </head>
 
@@ -76,6 +77,16 @@
   <footer class="footer">
     <p class="footer__copy">&copy; 2020 Mesto Russia</p>
   </footer>
+
+  <div class="popup">
+    <form class="popup__container">
+      <p class="popup__title">Редактировать профиль</p>
+      <input class="popup__text-input popup__text-input_name" type="text" name="name" id="name" value="Жак-Ив Кусто">
+      <input class="popup__text-input popup__text-input_job" type="text" name="job" id="job" value="Исследователь океана">
+      <button class="popup__button button" type="submit">Сохранить</button>
+      <div class="popup__close"></div>
+    </form>
+  </div>
 
 </body>
 
