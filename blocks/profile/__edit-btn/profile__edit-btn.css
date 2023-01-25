@@ -1,13 +1,12 @@
 .profile__edit-btn {
-  display: inline-block;
-  position: absolute;
-  bottom: 46px;
-  right: -42px;
   background-image: url(../../../images/button-edit.svg);
+  background-size: contain;
+  line-height: 1.14;
   width: 24px;
   height: 24px;
   transition: all .5s;
-  background-size: contain;
+  align-self: center;
+  margin-top: 8px;
 }
 
 .profile__edit-btn:hover {
@@ -15,9 +14,8 @@
   transition: all .5s;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 720px) {
   .profile__edit-btn {
-    right: -30px;
     width: 18px;
     height: 18px;
   }
@@ -25,6 +23,6 @@
 
 @media screen and (max-width: 500px) {
   .profile__edit-btn {
-    bottom: 37px;
+    margin-top: 4px;
   }
 }

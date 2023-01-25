@@ -1,8 +1,9 @@
 .profile__info {
-  max-width: 350px;
-  margin-inline-start: 30px;
+  margin-inline: 30px 15px;
   color: #fff;
-  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 18px;
 }
 
 @media screen and (max-width: 800px) {
@@ -13,7 +14,8 @@
 
 @media screen and (max-width: 720px) {
   .profile__info {
-    margin: 22px 0 0;
+    margin: 25px 0 0 28px;
+    column-gap: 10px;
     text-align: center;
   }
 }

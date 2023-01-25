@@ -13,7 +13,7 @@
 <body class="page">
 
   <header class="header">
-    <img src="./images/logo.png" alt="" class="header__logo">
+    <img src="./images/logo.svg" alt="Логотип" class="header__logo">
   </header>
 
   <main class="content">
@@ -21,55 +21,55 @@
       <img src="./images/profile-pic.jpg" alt="Фото пользователя" class="profile__avatar">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
+        <button class="profile__edit-btn button" type="button" aria-label="Редактировать профиль"></button>
         <p class="profile__job">Исследователь океана</p>
-        <a href="#" class="profile__edit-btn"></a>
       </div>
-      <button class="button add-btn profile__add-btn"></button>
+      <button class="profile__add-btn add-btn button" type="button" aria-label="Добавить фото"></button>
     </section>
 
     <section class="gallery" aria-label="Галерея изображений">
-      <div class="gallery__card card">
+      <article class="gallery__card card">
         <img src="./images/place-altai.jpg" alt="Алтай" class="card__image">
         <div class="card__info">
-          <p class="card__place">Алтай</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Алтай</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
-      <div class="gallery__card card">
+      </article>
+      <article class="gallery__card card">
         <img src="./images/place-baikal.jpg" alt="Байкал" class="card__image">
         <div class="card__info">
-          <p class="card__place">Байкал</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Байкал</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
-      <div class="gallery__card card">
+      </article>
+      <article class="gallery__card card">
         <img src="./images/place-kamchatka.jpg" alt="Камчатка" class="card__image">
         <div class="card__info">
-          <p class="card__place">Камчатка</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Камчатка</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
-      <div class="gallery__card card">
+      </article>
+      <article class="gallery__card card">
         <img src="./images/place-elbrus.jpg" alt="Гора Эльбрус" class="card__image">
         <div class="card__info">
-          <p class="card__place">Гора Эльбрус</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Гора Эльбрус</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
-      <div class="gallery__card card">
+      </article>
+      <article class="gallery__card card">
         <img src="./images/place-dombai.jpg" alt="Домбай" class="card__image">
         <div class="card__info">
-          <p class="card__place">Домбай</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Домбай</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
-      <div class="gallery__card card">
+      </article>
+      <article class="gallery__card card">
         <img src="./images/place-karachaevsk.jpg" alt="Карачаево-Черкесия" class="card__image">
         <div class="card__info">
-          <p class="card__place">Карачаево-Черкесия</p>
-          <button class="card__like-btn button"></button>
+          <h2 class="card__place">Карачаево-Черкесия</h2>
+          <button class="card__like-btn button" type="button" aria-label="Сердечко"></button>
         </div>
-      </div>
+      </article>
     </section>
 
   </main>
@@ -79,14 +79,17 @@
   </footer>
 
   <div class="popup">
-    <form class="popup__container">
-      <p class="popup__title">Редактировать профиль</p>
-      <input class="popup__text-input popup__text-input_name" type="text" name="name" id="name" value="Жак-Ив Кусто">
-      <input class="popup__text-input popup__text-input_job" type="text" name="job" id="job"
-        value="Исследователь океана">
-      <button class="popup__button button" type="submit">Сохранить</button>
-      <div class="popup__close"></div>
-    </form>
+    <div class="popup__container">
+      <button class="popup__close button" type="button" aria-label="Закрыть всплывающее окно"></button>
+      <form name="">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <input class="popup__text-input popup__text-input_type_name" type="text" name="name" id="name" value=""
+          placeholder="Введите имя">
+        <input class="popup__text-input popup__text-input_type_job" type="text" name="job" id="job" value=""
+          placeholder="Введите профессию">
+        <button class="popup__button button" type="submit">Сохранить</button>
+      </form>
+    </div>
   </div>
 
 </body>
