@@ -24,7 +24,7 @@
   }
 }
 
-@media screen and (max-device-width : 1024px) and (orientation : landscape) {
+@media screen and (max-device-width: 1024px) and (orientation: landscape) {
   .popup__close {
     top: 0;
     right: -40px;
