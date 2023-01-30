@@ -1,0 +1,13 @@
+.popup__container_animation_slide-out {
+	animation: slide-out .5s forwards;
+}
+
+@keyframes slide-out {
+	from {
+		transform: translateY(0);
+	}
+
+	to {
+		transform: translateY(-15px);
+	}
+}

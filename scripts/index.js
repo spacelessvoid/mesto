@@ -1,7 +1,8 @@
 let popupCloseBtn = document.querySelector(".popup__close");
 let profileEditBtn = document.querySelector(".profile__edit-btn");
 let popupOverlay = document.querySelector(".popup");
-let formElement = document.querySelector(".popup__container");
+let popupContainer = document.querySelector(".popup__container");
+let formElement = document.querySelector(".popup__form");
 let nameInput = formElement.querySelector(".popup__text-input_type_name");
 let jobInput = formElement.querySelector(".popup__text-input_type_job");
 let profileName = document.querySelector(".profile__name");
@@ -11,6 +12,17 @@ function popupToggle() {
   popupOverlay.classList.toggle("popup_opened");
 }
 
+function popupClose() {
+  popupOverlay.classList.add("popup_animation_fade-out");
+  popupContainer.classList.add("popup__container_animation_slide-out");
+  setTimeout(() => {
+    popupToggle();
+    popupOverlay.classList.remove("popup_animation_fade-out");
+    popupContainer.classList.remove("popup__container_animation_slide-out");
+  }, 550);
+}
+
+// Opening popup
 profileEditBtn.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
@@ -18,8 +30,17 @@ profileEditBtn.addEventListener("click", () => {
   popupToggle();
 });
 
-popupCloseBtn.addEventListener("click", popupToggle);
+// Pressing X to close popup
+popupCloseBtn.addEventListener("click", popupClose);
 
+// Pressing outside popup to close it
+popupOverlay.addEventListener("click", (event) => {
+  if (event.target === event.currentTarget) {
+    popupClose();
+  }
+});
+
+// Submitting the form in the popup
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
@@ -32,7 +53,7 @@ function handleFormSubmit(evt) {
   profileName.textContent = name;
   profileJob.textContent = job;
 
-  popupToggle();
+  popupClose();
 }
 
 formElement.addEventListener("submit", handleFormSubmit);

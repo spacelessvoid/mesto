@@ -10,4 +10,5 @@
   transition: all .5s;
   justify-content: center;
   align-items: center;
+  opacity: 0;
 }
