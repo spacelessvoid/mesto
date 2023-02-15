@@ -32,19 +32,8 @@ const page = document.querySelector(".page");
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__job");
 
-page.addEventListener("click", (evt) => {
-  if (
-    // Closing popup
-    evt.target.classList.contains("popup__close") ||
-    evt.target.classList.contains("popup")
-  ) {
-    handlePopupClose(evt);
-  } else if (evt.target.classList.contains("profile__edit-btn")) {
-    // Opening profile edit popup
-    openEditProfilePopup();
-  } else if (evt.target.classList.contains("add-btn")) {
-    openAddImagePopup();
-  }
+initialCards.forEach((el) => {
+  handleAddImage(el.name, el.link);
 });
 
 function handleAddImage(name, link) {
@@ -57,26 +46,10 @@ function handleAddImage(name, link) {
   document.querySelector(".gallery").prepend(newCard);
 }
 
-initialCards.forEach((el) => {
-  handleAddImage(el.name, el.link);
-});
-
-function handlePopupClose(evt) {
-  const popupOverlay = document.querySelector(".popup");
-  const popupContainer = document.querySelector(".popup__container");
-  popupOverlay.classList.add("popup_animation_fade-out");
-  popupContainer.classList.add("popup__container_animation_slide-out");
-  setTimeout(() => {
-    evt.target.closest(".popup").remove();
-    popupOverlay.classList.remove("popup_animation_fade-out");
-    popupContainer.classList.remove("popup__container_animation_slide-out");
-  }, 550);
-}
-
-function openAddImagePopup() {
-  const popupItem = templatePopupAddImage.content.cloneNode(true);
-  page.append(popupItem);
-  document.querySelector(".popup").classList.add("popup_opened");
+function handleLikeToggle(evt) {
+  const card = evt.target.closest(".card");
+  const like = card.querySelector(".card__like-btn");
+  like.classList.toggle("card__like-btn_active");
 }
 
 function openEditProfilePopup() {
@@ -90,6 +63,24 @@ function openEditProfilePopup() {
     profileJob.textContent;
 }
 
+function openAddImagePopup() {
+  const popupItem = templatePopupAddImage.content.cloneNode(true);
+  page.append(popupItem);
+  document.querySelector(".popup").classList.add("popup_opened");
+}
+
+function handlePopupClose(evt) {
+  const popupOverlay = document.querySelector(".popup");
+  const popupContainer = document.querySelector(".popup__container");
+  popupOverlay.classList.add("popup_animation_fade-out");
+  popupContainer.classList.add("popup__container_animation_slide-out");
+  setTimeout(() => {
+    evt.target.closest(".popup").remove();
+    popupOverlay.classList.remove("popup_animation_fade-out");
+    popupContainer.classList.remove("popup__container_animation_slide-out");
+  }, 550);
+}
+
 // Submitting the form
 function handleFormSubmit(evt) {
   evt.preventDefault();
@@ -97,6 +88,7 @@ function handleFormSubmit(evt) {
   let name = document.querySelector(".popup__text-input_type_name");
   let job = document.querySelector(".popup__text-input_type_job");
   let link = document.querySelector(".popup__text-input_type_link");
+
   // Submitting the profile edit popup
   if (evt.target.classList.contains("form__edit-profile")) {
     profileName.textContent = name.value;
@@ -104,10 +96,55 @@ function handleFormSubmit(evt) {
   }
   // Submitting the add image popup
   if (evt.target.classList.contains("form__add-image")) {
-    handleAddImage(name.value, link.value);
+    if (name.value && link.value) {
+      handleAddImage(name.value, link.value);
+    } else {
+      function randomLink() {
+        const keyWords = [
+          "landscape",
+          "city",
+          "forest",
+          "travel",
+          "mountains",
+          "sea",
+          "islands",
+          "snow",
+          "desert",
+        ];
+
+        return (link.value =
+          "https://source.unsplash.com/random?" +
+          keyWords[Math.floor(Math.random() * 10)]);
+      }
+      handleAddImage("ಠ_ಠ", randomLink());
+    }
   }
 
   handlePopupClose(evt);
 }
 
+// Popup open/close event
+page.addEventListener("mousedown", (evt) => {
+  // Closing popup
+  if (
+    evt.target.classList.contains("popup__close") ||
+    evt.target.classList.contains("popup")
+  ) {
+    handlePopupClose(evt);
+  }
+  // Opening profile edit popup
+  if (evt.target.classList.contains("profile__edit-btn")) {
+    openEditProfilePopup();
+  }
+  // Opening add image popup
+  if (evt.target.classList.contains("add-btn")) {
+    openAddImagePopup();
+  }
+  // Liking a card
+  if (evt.target.classList.contains("card__like-btn")) {
+    handleLikeToggle(evt);
+  }
+});
+
+// Form submit event
 page.addEventListener("submit", handleFormSubmit);
