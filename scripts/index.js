@@ -52,6 +52,10 @@ function handleLikeToggle(evt) {
   like.classList.toggle("card__like-btn_active");
 }
 
+function handleDeleteCard(evt) {
+  evt.target.closest(".card").remove();
+}
+
 function openEditProfilePopup() {
   const popupItem = templatePopupEditProfile.content.cloneNode(true);
   page.append(popupItem);
@@ -124,7 +128,7 @@ function handleFormSubmit(evt) {
 }
 
 // Popup open/close event
-page.addEventListener("mousedown", (evt) => {
+page.addEventListener("click", (evt) => {
   // Closing popup
   if (
     evt.target.classList.contains("popup__close") ||
@@ -143,6 +147,9 @@ page.addEventListener("mousedown", (evt) => {
   // Liking a card
   if (evt.target.classList.contains("card__like-btn")) {
     handleLikeToggle(evt);
+  }
+  if (evt.target.classList.contains("card__delete-btn")) {
+    handleDeleteCard(evt);
   }
 });
 
