@@ -1,5 +1,4 @@
 .popup_opened {
-  /* display: flex; */
   animation: fade-in .5s forwards;
 }
 

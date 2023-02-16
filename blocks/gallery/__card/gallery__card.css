@@ -1,3 +1,17 @@
 .gallery__card {
-  flex: 1 1 282px;
+  flex: 0 1 282px;
+}
+
+@media screen and (max-width: 920px) {
+  .gallery__card {
+    flex: 1 1 282px;
+    max-width: calc(50% - 8.5px);
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .gallery__card {
+    flex: 1 1 282px;
+    max-width: 100%;
+  }
 }

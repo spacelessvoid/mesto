@@ -28,10 +28,12 @@ const initialCards = [
 const templateCard = document.querySelector("#card");
 const templatePopupEditProfile = document.querySelector("#popup-edit-profile");
 const templatePopupAddImage = document.querySelector("#popup-add-image");
+const templatePopupZoomImage = document.querySelector("#popup-zoom-image");
 const page = document.querySelector(".page");
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__job");
 
+// Loading the cards from initial array
 initialCards.forEach((el) => {
   handleAddImage(el.name, el.link);
 });
@@ -40,6 +42,29 @@ function handleAddImage(name, link) {
   const newCard = templateCard.content.cloneNode(true);
   const title = newCard.querySelector(".card__place");
   const image = newCard.querySelector(".card__image");
+  if (name === "") {
+    name = "ಠ_ಠ";
+  }
+  if (link === "") {
+    function randomLink() {
+      const keyWords = [
+        "landscape",
+        "city",
+        "forest",
+        "travel",
+        "mountains",
+        "sea",
+        "islands",
+        "snow",
+        "desert",
+      ];
+
+      return (link.value =
+        "https://source.unsplash.com/random?" +
+        keyWords[Math.floor(Math.random() * 10)]);
+    }
+    link = randomLink();
+  }
   title.textContent = name;
   image.alt = "Фото: " + name;
   image.src = link;
@@ -53,35 +78,53 @@ function handleLikeToggle(evt) {
 }
 
 function handleDeleteCard(evt) {
-  evt.target.closest(".card").remove();
+  const thisCard = evt.target.closest(".card");
+  thisCard.classList.add("popup_animation_fade-out");
+  setTimeout(() => {
+    thisCard.remove();
+  }, 200);
+}
+
+function zoomImagePopup(evt) {
+  const zoomedImage = templatePopupZoomImage.content.cloneNode(true);
+  const image = zoomedImage.querySelector(".popup__image-zoomed");
+  const caption = zoomedImage.querySelector(".popup__caption");
+  const thisCard = evt.target.closest(".card");
+  const thisImage = thisCard.querySelector(".card__image");
+  const thisTitle = thisCard.querySelector(".card__place");
+  zoomedImage.querySelector(".popup").classList.add("popup_opened");
+
+  image.src = thisImage.src;
+  image.alt = thisImage.alt;
+  caption.textContent = thisTitle.textContent;
+  page.append(zoomedImage);
 }
 
 function openEditProfilePopup() {
   const popupItem = templatePopupEditProfile.content.cloneNode(true);
-  page.append(popupItem);
-  document.querySelector(".popup").classList.add("popup_opened");
-
-  document.querySelector(".popup__text-input_type_name").value =
+  popupItem.querySelector(".popup").classList.add("popup_opened");
+  popupItem.querySelector(".popup__text-input_type_name").value =
     profileName.textContent;
-  document.querySelector(".popup__text-input_type_job").value =
+  popupItem.querySelector(".popup__text-input_type_job").value =
     profileJob.textContent;
+  page.append(popupItem);
 }
 
 function openAddImagePopup() {
   const popupItem = templatePopupAddImage.content.cloneNode(true);
+  popupItem.querySelector(".popup").classList.add("popup_opened");
   page.append(popupItem);
-  document.querySelector(".popup").classList.add("popup_opened");
 }
 
 function handlePopupClose(evt) {
   const popupOverlay = document.querySelector(".popup");
   const popupContainer = document.querySelector(".popup__container");
   popupOverlay.classList.add("popup_animation_fade-out");
-  popupContainer.classList.add("popup__container_animation_slide-out");
+  if (popupContainer) {
+    popupContainer.classList.add("popup__container_animation_slide-out");
+  }
   setTimeout(() => {
-    evt.target.closest(".popup").remove();
-    popupOverlay.classList.remove("popup_animation_fade-out");
-    popupContainer.classList.remove("popup__container_animation_slide-out");
+    popupOverlay.remove();
   }, 550);
 }
 
@@ -100,34 +143,13 @@ function handleFormSubmit(evt) {
   }
   // Submitting the add image popup
   if (evt.target.classList.contains("form__add-image")) {
-    if (name.value && link.value) {
-      handleAddImage(name.value, link.value);
-    } else {
-      function randomLink() {
-        const keyWords = [
-          "landscape",
-          "city",
-          "forest",
-          "travel",
-          "mountains",
-          "sea",
-          "islands",
-          "snow",
-          "desert",
-        ];
-
-        return (link.value =
-          "https://source.unsplash.com/random?" +
-          keyWords[Math.floor(Math.random() * 10)]);
-      }
-      handleAddImage("ಠ_ಠ", randomLink());
-    }
+    handleAddImage(name.value, link.value);
   }
 
   handlePopupClose(evt);
 }
 
-// Popup open/close event
+// All the user click events
 page.addEventListener("click", (evt) => {
   // Closing popup
   if (
@@ -148,8 +170,13 @@ page.addEventListener("click", (evt) => {
   if (evt.target.classList.contains("card__like-btn")) {
     handleLikeToggle(evt);
   }
+  // Deleting a card
   if (evt.target.classList.contains("card__delete-btn")) {
     handleDeleteCard(evt);
+  }
+  // Zooming an image
+  if (evt.target.classList.contains("card__image")) {
+    zoomImagePopup(evt);
   }
 });
 
