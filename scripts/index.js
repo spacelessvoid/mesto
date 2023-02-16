@@ -34,8 +34,8 @@ const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__job");
 
 // Loading the cards from initial array
-initialCards.forEach((el) => {
-  handleAddImage(el.name, el.link);
+initialCards.forEach((item) => {
+  handleAddImage(item.name, item.link);
 });
 
 function handleAddImage(name, link) {
@@ -111,30 +111,30 @@ function openEditProfilePopup() {
 }
 
 function openAddImagePopup() {
-  const popupItem = templatePopupAddImage.content.cloneNode(true);
-  popupItem.querySelector(".popup").classList.add("popup_opened");
-  page.append(popupItem);
+  const popup = templatePopupAddImage.content.cloneNode(true);
+  popup.querySelector(".popup").classList.add("popup_opened");
+  page.append(popup);
 }
 
-function handlePopupClose(evt) {
-  const popupOverlay = document.querySelector(".popup");
+function handlePopupClose() {
+  const popup = document.querySelector(".popup");
   const popupContainer = document.querySelector(".popup__container");
-  popupOverlay.classList.add("popup_animation_fade-out");
+  popup.classList.add("popup_animation_fade-out");
   if (popupContainer) {
     popupContainer.classList.add("popup__container_animation_slide-out");
   }
   setTimeout(() => {
-    popupOverlay.remove();
-  }, 550);
+    popup.remove();
+  }, 300);
 }
 
 // Submitting the form
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
-  let name = document.querySelector(".popup__text-input_type_name");
-  let job = document.querySelector(".popup__text-input_type_job");
-  let link = document.querySelector(".popup__text-input_type_link");
+  const name = document.querySelector(".popup__text-input_type_name");
+  const job = document.querySelector(".popup__text-input_type_job");
+  const link = document.querySelector(".popup__text-input_type_link");
 
   // Submitting the profile edit popup
   if (evt.target.classList.contains("form__edit-profile")) {
