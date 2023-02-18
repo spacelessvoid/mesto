@@ -88,12 +88,12 @@ function submitForms(evt) {
   evt.preventDefault();
 
   // Submitting the profile edit popup
-  if (evt.target.classList.contains("form__edit-profile")) {
+  if (evt.target.classList.contains("popup__form_type_edit-profile")) {
     profileName.textContent = inputName.value;
     profileJob.textContent = inputJob.value;
   }
   // Submitting the add image popup
-  if (evt.target.classList.contains("form__add-image")) {
+  if (evt.target.classList.contains("popup__form_type_add-image")) {
     addCard(inputTitle.value, inputLink.value);
   }
   closePopup(openedPopup);
