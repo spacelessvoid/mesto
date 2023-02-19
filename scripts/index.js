@@ -4,7 +4,6 @@ const popupOverlays = document.querySelectorAll(".popup");
 const popupEditProfile = document.querySelector("#popup-edit-profile");
 const popupAddImage = document.querySelector("#popup-add-image");
 const popupZoomImage = document.querySelector("#popup-zoom-image");
-let openedPopup;
 
 const inputName = document.querySelector(".popup__text-input_type_name");
 const inputJob = document.querySelector(".popup__text-input_type_job");
@@ -17,6 +16,8 @@ const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__job");
 const cardAddBtn = document.querySelector(".add-btn");
 const gallery = document.querySelector(".gallery");
+const cardZoomedImage = popupZoomImage.querySelector(".popup__image-zoomed");
+const cardZoomedCaption = popupZoomImage.querySelector(".popup__caption");
 
 // Loading the cards from initial array
 initialCards.forEach((item) => {
@@ -25,7 +26,6 @@ initialCards.forEach((item) => {
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
-  openedPopup = popup;
 }
 
 function closePopup(popup) {
@@ -65,15 +65,13 @@ function deleteCard(evt) {
 }
 
 function openZoomImagePopup(evt) {
-  const image = popupZoomImage.querySelector(".popup__image-zoomed");
-  const caption = popupZoomImage.querySelector(".popup__caption");
   const thisCard = evt.target.closest(".card");
   const thisImage = thisCard.querySelector(".card__image");
   const thisTitle = thisCard.querySelector(".card__place");
 
-  image.src = thisImage.src;
-  image.alt = thisImage.alt;
-  caption.textContent = thisTitle.textContent;
+  cardZoomedImage.src = thisImage.src;
+  cardZoomedImage.alt = thisImage.alt;
+  cardZoomedCaption.textContent = thisTitle.textContent;
   openPopup(popupZoomImage);
 }
 
@@ -83,20 +81,22 @@ function openEditProfilePopup() {
   openPopup(popupEditProfile);
 }
 
-// Submitting the forms
-function submitForms(evt) {
+// Submitting the profile edit popup
+function submitEditProfileForm(evt) {
   evt.preventDefault();
 
-  // Submitting the profile edit popup
-  if (evt.target.classList.contains("popup__form_type_edit-profile")) {
-    profileName.textContent = inputName.value;
-    profileJob.textContent = inputJob.value;
-  }
-  // Submitting the add image popup
-  if (evt.target.classList.contains("popup__form_type_add-image")) {
-    addCard(inputTitle.value, inputLink.value);
-  }
-  closePopup(openedPopup);
+  profileName.textContent = inputName.value;
+  profileJob.textContent = inputJob.value;
+
+  closePopup(popupEditProfile);
+}
+
+// Submitting the add image popup
+function submitAddImageForm(evt) {
+  evt.preventDefault();
+
+  addCard(inputTitle.value, inputLink.value);
+  closePopup(popupAddImage);
 }
 
 // Opening profile edit popup
@@ -111,13 +111,14 @@ cardAddBtn.addEventListener("click", () => {
 popupOverlays.forEach((item) => {
   item.addEventListener("click", (evt) => {
     if (evt.target.classList.contains("popup")) {
-      closePopup(openedPopup);
+      closePopup(item);
     }
     if (evt.target.classList.contains("popup__close")) {
-      closePopup(openedPopup);
+      closePopup(item);
     }
   });
 });
 
-// Form submit event
-page.addEventListener("submit", submitForms);
+// Form submit events
+popupEditProfile.addEventListener("submit", submitEditProfileForm);
+popupAddImage.addEventListener("submit", submitAddImageForm);
