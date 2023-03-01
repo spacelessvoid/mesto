@@ -1,35 +1,45 @@
-const templateCard = document.querySelector("#card");
+const templateCard = document.querySelector("#card"),
+  popupOverlays = document.querySelectorAll(".popup"),
+  popupEditProfile = document.querySelector("#popup-edit-profile"),
+  popupAddImage = document.querySelector("#popup-add-image"),
+  popupZoomImage = document.querySelector("#popup-zoom-image"),
+  inputName = document.querySelector(".popup__text-input_type_name"),
+  inputJob = document.querySelector(".popup__text-input_type_job"),
+  inputTitle = document.querySelector(".popup__text-input_type_title"),
+  inputLink = document.querySelector(".popup__text-input_type_link"),
+  page = document.querySelector(".page"),
+  profileEditBtn = document.querySelector(".profile__edit-btn"),
+  profileName = document.querySelector(".profile__name"),
+  profileJob = document.querySelector(".profile__job"),
+  cardAddBtn = document.querySelector(".add-btn"),
+  gallery = document.querySelector(".gallery"),
+  cardZoomedImage = popupZoomImage.querySelector(".popup__image-zoomed"),
+  cardZoomedCaption = popupZoomImage.querySelector(".popup__caption");
 
-const popupOverlays = document.querySelectorAll(".popup");
-const popupEditProfile = document.querySelector("#popup-edit-profile");
-const popupAddImage = document.querySelector("#popup-add-image");
-const popupZoomImage = document.querySelector("#popup-zoom-image");
-
-const inputName = document.querySelector(".popup__text-input_type_name");
-const inputJob = document.querySelector(".popup__text-input_type_job");
-const inputTitle = document.querySelector(".popup__text-input_type_title");
-const inputLink = document.querySelector(".popup__text-input_type_link");
-
-const page = document.querySelector(".page");
-const profileEditBtn = document.querySelector(".profile__edit-btn");
-const profileName = document.querySelector(".profile__name");
-const profileJob = document.querySelector(".profile__job");
-const cardAddBtn = document.querySelector(".add-btn");
-const gallery = document.querySelector(".gallery");
-const cardZoomedImage = popupZoomImage.querySelector(".popup__image-zoomed");
-const cardZoomedCaption = popupZoomImage.querySelector(".popup__caption");
+let popupOpened;
 
 // Loading the cards from initial array
 initialCards.forEach((item) => {
   addCard(item.name, item.link);
 });
 
+const closeOnKeydownEscape = (evt) => {
+  if (evt.key === "Escape") {
+    closePopup(popupOpened);
+  }
+};
+
 function openPopup(popup) {
   popup.classList.add("popup_opened");
+  popupOpened = popup;
+
+  document.addEventListener("keydown", closeOnKeydownEscape);
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
+
+  document.removeEventListener("keydown", closeOnKeydownEscape);
 }
 
 function createCard(name, link) {

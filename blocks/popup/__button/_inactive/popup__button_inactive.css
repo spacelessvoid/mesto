@@ -1,0 +1,5 @@
+.popup__button_inactive {
+	border: 1px solid hsla(0, 0%, 77%, 1);
+	background-color: #fff;
+	color: hsla(0, 0%, 77%, 1);
+}
