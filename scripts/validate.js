@@ -1,21 +1,17 @@
-const formValidationConfig = {
-  formSelector: ".popup__form", // selector for form class name in the document
-  inputSelector: ".popup__text-input", // selector for input class name in the document
-  inputErrorClass: "popup__text-input_invalid", // class name modifying input field style in case of invalid input
-  submitButtonSelector: ".popup__button", // selector for submit button in a form
-  buttonDisabledClass: "popup__button_inactive", // class name setting inactive state on submit button
-};
-
 function showInputError(inputElement, config) {
   const errorElement = document.querySelector(`.${inputElement.id}-error`);
   // passing text of built-in `validationMessage` to error message element
   errorElement.textContent = inputElement.validationMessage;
+  errorElement.classList.add(config.errorElementClass);
   inputElement.classList.add(config.inputErrorClass);
 }
 
 function hideInputError(inputElement, config) {
   const errorElement = document.querySelector(`.${inputElement.id}-error`);
-  errorElement.textContent = "";
+  errorElement.classList.remove(config.errorElementClass);
+  setTimeout(() => {
+    errorElement.textContent = "";
+  }, 550);
   inputElement.classList.remove(config.inputErrorClass);
 }
 
@@ -42,17 +38,11 @@ function setEventListeners(formElement, config) {
     formElement.querySelectorAll(config.inputSelector)
   );
 
-  // calling the func on load to disable submit buttons
-  // toggleSubmitButtonState(formElement, config);
-
-  formElement.addEventListener("input", () => {
-    toggleSubmitButtonState(formElement, config);
-  });
-
   // each input is passed for the first time
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", () => {
       checkInputValidity(inputElement, config);
+      toggleSubmitButtonState(formElement, config);
     });
   });
 }
