@@ -23,23 +23,34 @@ initialCards.forEach((item) => {
   addCard(item.name, item.link);
 });
 
-const closeOnKeydownEscape = (evt) => {
+const closePopupOnEscapePress = (evt) => {
   if (evt.key === "Escape") {
     closePopup(popupOpened);
   }
 };
 
+// preventing validation error message on popup open if before it was closed with an empty input
+function checkFormOnOpen(popup) {
+  const thisForm = popup.querySelector(".popup__form");
+  const inputList = thisForm.querySelectorAll(".popup__text-input");
+
+  inputList.forEach((inputElement) => {
+    hideInputError(inputElement, formValidationConfig);
+  });
+  toggleSubmitButtonState(thisForm, formValidationConfig);
+}
+
 function openPopup(popup) {
   popup.classList.add("popup_opened");
   popupOpened = popup;
 
-  document.addEventListener("keydown", closeOnKeydownEscape);
+  document.addEventListener("keydown", closePopupOnEscapePress);
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
 
-  document.removeEventListener("keydown", closeOnKeydownEscape);
+  document.removeEventListener("keydown", closePopupOnEscapePress);
 }
 
 function createCard(name, link) {
@@ -88,6 +99,7 @@ function openZoomImagePopup(evt) {
 function openEditProfilePopup() {
   inputName.value = profileName.textContent;
   inputJob.value = profileJob.textContent;
+
   openPopup(popupEditProfile);
 }
 
@@ -104,17 +116,24 @@ function submitEditProfileForm(evt) {
 // Submitting the add image popup
 function submitAddImageForm(evt) {
   evt.preventDefault();
+  const thisForm = popupAddImage.querySelector(".popup__form");
 
   addCard(inputTitle.value, inputLink.value);
+  thisForm.reset();
+
   closePopup(popupAddImage);
 }
 
 // Opening profile edit popup
-profileEditBtn.addEventListener("click", openEditProfilePopup);
+profileEditBtn.addEventListener("click", () => {
+  openEditProfilePopup();
+  checkFormOnOpen(popupEditProfile);
+});
 
 // Opening add image popup
 cardAddBtn.addEventListener("click", () => {
   openPopup(popupAddImage);
+  checkFormOnOpen(popupAddImage);
 });
 
 // Closing popup
