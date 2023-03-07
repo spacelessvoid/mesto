@@ -31,7 +31,7 @@ const formValidationConfig = {
   inputErrorClass: "popup__text-input_invalid", // class name modifying input field style in case of invalid input
   submitButtonSelector: ".popup__button", // selector for submit button in a form
   buttonDisabledClass: "popup__button_inactive", // class name setting inactive state on submit button
-  errorElementClass: "popup__input-error_active",
+  errorElementClass: "popup__input-error_active", // class name for error message element active state
 };
 
 const templateCard = document.querySelector("#card"),

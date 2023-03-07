@@ -1,11 +1,11 @@
 // Loading the cards from initial array
-initialCards.forEach((item) => {
-  addCard(item.name, item.link);
+initialCards.forEach((card) => {
+  addCard(card.name, card.link);
 });
 
 const closePopupOnEscapePress = (evt) => {
-  const popupOpened = document.querySelector(".popup_opened");
   if (evt.key === "Escape") {
+    const popupOpened = document.querySelector(".popup_opened");
     closePopup(popupOpened);
   }
 };
