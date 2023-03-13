@@ -1,5 +1,5 @@
 .gallery {
   display: flex;
-  gap: 20px 17px;
   flex-wrap: wrap;
+  gap: 20px 17px;
 }
