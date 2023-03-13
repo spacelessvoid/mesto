@@ -26,7 +26,6 @@ const initialCards = [
 ];
 
 const formValidationConfig = {
-  formSelector: ".popup__form", // selector for form class name in the document
   inputSelector: ".popup__text-input", // selector for input class name in the document
   inputErrorClass: "popup__text-input_invalid", // class name modifying input field style in case of invalid input
   submitButtonSelector: ".popup__button", // selector for submit button in a form
@@ -34,8 +33,8 @@ const formValidationConfig = {
   errorElementClass: "popup__input-error_active", // class name for error message element active state
 };
 
-const templateCard = document.querySelector("#card"),
-  popupOverlays = document.querySelectorAll(".popup"),
+const popupOverlays = document.querySelectorAll(".popup"),
+  formList = document.querySelectorAll(".popup__form"),
   formEditProfile = document.querySelector("#edit-profile"),
   formAddImage = document.querySelector("#add-image"),
   popupEditProfile = document.querySelector("#popup-edit-profile"),
@@ -49,6 +48,4 @@ const templateCard = document.querySelector("#card"),
   profileName = document.querySelector(".profile__name"),
   profileJob = document.querySelector(".profile__job"),
   cardAddBtn = document.querySelector(".add-btn"),
-  gallery = document.querySelector(".gallery"),
-  cardZoomedImage = popupZoomImage.querySelector(".popup__image-zoomed"),
-  cardZoomedCaption = popupZoomImage.querySelector(".popup__caption");
+  gallery = document.querySelector(".gallery");

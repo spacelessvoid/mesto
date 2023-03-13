@@ -1,6 +1,9 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 // Loading the cards from initial array
-initialCards.forEach((card) => {
-  addCard(card.name, card.link);
+initialCards.forEach((item) => {
+  addCard(item);
 });
 
 const closePopupOnEscapePress = (evt) => {
@@ -10,76 +13,21 @@ const closePopupOnEscapePress = (evt) => {
   }
 };
 
-// preventing validation error message on popup open if before it was closed with an empty input
-function checkFormOnOpen(formOpened) {
-  const inputList = formOpened.querySelectorAll(".popup__text-input");
-
-  inputList.forEach((inputElement) => {
-    hideInputError(inputElement, formValidationConfig);
-  });
-  toggleSubmitButtonState(formOpened, formValidationConfig);
-}
-
 function openPopup(popup) {
   popup.classList.add("popup_opened");
-
   document.addEventListener("keydown", closePopupOnEscapePress);
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
-
   document.removeEventListener("keydown", closePopupOnEscapePress);
 }
 
-function createCard(name, link) {
-  const newCard = templateCard.content.cloneNode(true);
-  const title = newCard.querySelector(".card__place");
-  const image = newCard.querySelector(".card__image");
-  const deleteBtn = newCard.querySelector(".card__delete-btn");
-  const likeBtn = newCard.querySelector(".card__like-btn");
+function addCard(data) {
+  const cardElement = new Card(data, "#card-template", openPopup);
+  const newCard = cardElement.generateCard();
 
-  title.textContent = name;
-  image.alt = "Фото: " + name;
-  image.src = link;
-
-  image.addEventListener("click", openZoomImagePopup);
-  deleteBtn.addEventListener("click", deleteCard);
-  likeBtn.addEventListener("click", toggleCardLike);
-
-  return newCard;
-}
-
-function addCard(name, link) {
-  gallery.prepend(createCard(name, link));
-}
-
-function toggleCardLike(evt) {
-  const like = evt.target.closest(".card").querySelector(".card__like-btn");
-  like.classList.toggle("card__like-btn_active");
-}
-
-function deleteCard(evt) {
-  const thisCard = evt.target.closest(".card");
-  thisCard.remove();
-}
-
-function openZoomImagePopup(evt) {
-  const thisCard = evt.target.closest(".card");
-  const thisImage = thisCard.querySelector(".card__image");
-  const thisTitle = thisCard.querySelector(".card__place");
-
-  cardZoomedImage.src = thisImage.src;
-  cardZoomedImage.alt = thisImage.alt;
-  cardZoomedCaption.textContent = thisTitle.textContent;
-  openPopup(popupZoomImage);
-}
-
-function openEditProfilePopup() {
-  inputName.value = profileName.textContent;
-  inputJob.value = profileJob.textContent;
-
-  openPopup(popupEditProfile);
+  gallery.prepend(newCard);
 }
 
 // Submitting the profile edit popup
@@ -96,10 +44,27 @@ function submitEditProfileForm(evt) {
 function submitAddImageForm(evt) {
   evt.preventDefault();
 
-  addCard(inputTitle.value, inputLink.value);
+  const newCard = {
+    name: inputTitle.value,
+    link: inputLink.value,
+  };
+
+  addCard(newCard);
   formAddImage.reset();
 
   closePopup(popupAddImage);
+}
+// Checking if button should be disabled on popup open
+function checkFormOnOpen(formOpened) {
+  const validator = new FormValidator(formOpened, formValidationConfig);
+  validator.toggleSubmitButtonState();
+}
+
+function openEditProfilePopup() {
+  inputName.value = profileName.textContent;
+  inputJob.value = profileJob.textContent;
+
+  openPopup(popupEditProfile);
 }
 
 // Opening profile edit popup
@@ -121,6 +86,13 @@ popupOverlays.forEach((item) => {
       evt.target.classList.contains("popup") ||
       evt.target.classList.contains("popup__close")
     ) {
+      // preventing validation error message on popup open if before it was closed with an empty input
+      const formOpened = document
+        .querySelector(".popup_opened")
+        .querySelector(".popup__form");
+      if (formOpened) {
+        formOpened.reset();
+      }
       closePopup(item);
     }
   });
@@ -129,3 +101,9 @@ popupOverlays.forEach((item) => {
 // Form submit events
 formEditProfile.addEventListener("submit", submitEditProfileForm);
 formAddImage.addEventListener("submit", submitAddImageForm);
+
+// Enabling validation
+formList.forEach((formElement) => {
+  const validator = new FormValidator(formElement, formValidationConfig);
+  validator.enableValidation();
+});
