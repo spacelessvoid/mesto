@@ -1,14 +1,38 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
+import {
+  initialCards,
+  formValidationConfig,
+  popupOverlays,
+  formEditProfile,
+  formAddImage,
+  popupEditProfile,
+  popupAddImage,
+  popupZoomImage,
+  zoomedImage,
+  zoomedCaption,
+  inputName,
+  inputJob,
+  inputTitle,
+  inputLink,
+  profileEditBtn,
+  profileName,
+  profileJob,
+  cardAddBtn,
+  gallery,
+} from "./constants.js";
 
 // Loading the cards from initial array
 initialCards.forEach((item) => {
-  addCard(item);
+  addCard(createCard(item));
 });
 
 const closePopupOnEscapePress = (evt) => {
   if (evt.key === "Escape") {
     const popupOpened = document.querySelector(".popup_opened");
+    if (formAddImage) {
+      formAddImage.reset();
+    }
     closePopup(popupOpened);
   }
 };
@@ -23,11 +47,14 @@ function closePopup(popup) {
   document.removeEventListener("keydown", closePopupOnEscapePress);
 }
 
-function addCard(data) {
-  const cardElement = new Card(data, "#card-template", openPopup);
-  const newCard = cardElement.generateCard();
+function createCard(data) {
+  const cardElement = new Card(data, "#card-template", openZoomImagePopup);
 
-  gallery.prepend(newCard);
+  return cardElement.generateCard();
+}
+
+function addCard(card) {
+  gallery.prepend(card);
 }
 
 // Submitting the profile edit popup
@@ -49,15 +76,10 @@ function submitAddImageForm(evt) {
     link: inputLink.value,
   };
 
-  addCard(newCard);
+  addCard(createCard(newCard));
   formAddImage.reset();
 
   closePopup(popupAddImage);
-}
-// Checking if button should be disabled on popup open
-function checkFormOnOpen(formOpened) {
-  const validator = new FormValidator(formOpened, formValidationConfig);
-  validator.toggleSubmitButtonState();
 }
 
 function openEditProfilePopup() {
@@ -67,16 +89,24 @@ function openEditProfilePopup() {
   openPopup(popupEditProfile);
 }
 
+function openZoomImagePopup(name, link) {
+  zoomedImage.src = link;
+  zoomedImage.alt = name;
+  zoomedCaption.textContent = name;
+
+  openPopup(popupZoomImage);
+}
+
 // Opening profile edit popup
 profileEditBtn.addEventListener("click", () => {
   openEditProfilePopup();
-  checkFormOnOpen(formEditProfile);
+  profileFormValidation.resetValidation();
 });
 
 // Opening add image popup
 cardAddBtn.addEventListener("click", () => {
   openPopup(popupAddImage);
-  checkFormOnOpen(formAddImage);
+  newCardFormValidation.resetValidation();
 });
 
 // Closing popup
@@ -86,12 +116,8 @@ popupOverlays.forEach((item) => {
       evt.target.classList.contains("popup") ||
       evt.target.classList.contains("popup__close")
     ) {
-      // preventing validation error message on popup open if before it was closed with an empty input
-      const formOpened = document
-        .querySelector(".popup_opened")
-        .querySelector(".popup__form");
-      if (formOpened) {
-        formOpened.reset();
+      if (formAddImage) {
+        formAddImage.reset();
       }
       closePopup(item);
     }
@@ -103,7 +129,13 @@ formEditProfile.addEventListener("submit", submitEditProfileForm);
 formAddImage.addEventListener("submit", submitAddImageForm);
 
 // Enabling validation
-formList.forEach((formElement) => {
-  const validator = new FormValidator(formElement, formValidationConfig);
-  validator.enableValidation();
-});
+const profileFormValidation = new FormValidator(
+  formEditProfile,
+  formValidationConfig
+);
+const newCardFormValidation = new FormValidator(
+  formAddImage,
+  formValidationConfig
+);
+profileFormValidation.enableValidation();
+newCardFormValidation.enableValidation();
