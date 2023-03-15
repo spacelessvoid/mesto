@@ -30,9 +30,6 @@ initialCards.forEach((item) => {
 const closePopupOnEscapePress = (evt) => {
   if (evt.key === "Escape") {
     const popupOpened = document.querySelector(".popup_opened");
-    if (formAddImage) {
-      formAddImage.reset();
-    }
     closePopup(popupOpened);
   }
 };
@@ -77,7 +74,6 @@ function submitAddImageForm(evt) {
   };
 
   addCard(createCard(newCard));
-  formAddImage.reset();
 
   closePopup(popupAddImage);
 }
@@ -106,6 +102,7 @@ profileEditBtn.addEventListener("click", () => {
 // Opening add image popup
 cardAddBtn.addEventListener("click", () => {
   openPopup(popupAddImage);
+  formAddImage.reset();
   newCardFormValidation.resetValidation();
 });
 
@@ -116,9 +113,6 @@ popupOverlays.forEach((item) => {
       evt.target.classList.contains("popup") ||
       evt.target.classList.contains("popup__close")
     ) {
-      if (formAddImage) {
-        formAddImage.reset();
-      }
       closePopup(item);
     }
   });
