@@ -1,31 +1,23 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
-import {
-  initialCards,
-  formValidationConfig,
-  popupOverlays,
-  formEditProfile,
-  formAddImage,
-  popupEditProfile,
-  popupAddImage,
-  popupZoomImage,
-  zoomedImage,
-  zoomedCaption,
-  inputName,
-  inputJob,
-  inputTitle,
-  inputLink,
-  profileEditBtn,
-  profileName,
-  profileJob,
-  cardAddBtn,
-  gallery,
-} from "./constants.js";
+import * as constants from "./constants.js";
 
 // Loading the cards from initial array
-initialCards.forEach((item) => {
+constants.initialCards.forEach((item) => {
   addCard(createCard(item));
 });
+
+// Enabling validation
+const profileFormValidation = new FormValidator(
+  constants.formEditProfile,
+  constants.formValidationConfig
+);
+const newCardFormValidation = new FormValidator(
+  constants.formAddImage,
+  constants.formValidationConfig
+);
+profileFormValidation.enableValidation();
+newCardFormValidation.enableValidation();
 
 const closePopupOnEscapePress = (evt) => {
   if (evt.key === "Escape") {
@@ -51,17 +43,17 @@ function createCard(data) {
 }
 
 function addCard(card) {
-  gallery.prepend(card);
+  constants.gallery.prepend(card);
 }
 
 // Submitting the profile edit popup
 function submitEditProfileForm(evt) {
   evt.preventDefault();
 
-  profileName.textContent = inputName.value;
-  profileJob.textContent = inputJob.value;
+  constants.profileName.textContent = constants.inputName.value;
+  constants.profileJob.textContent = constants.inputJob.value;
 
-  closePopup(popupEditProfile);
+  closePopup(constants.popupEditProfile);
 }
 
 // Submitting the add image popup
@@ -69,45 +61,45 @@ function submitAddImageForm(evt) {
   evt.preventDefault();
 
   const newCard = {
-    name: inputTitle.value,
-    link: inputLink.value,
+    name: constants.inputTitle.value,
+    link: constants.inputLink.value,
   };
 
   addCard(createCard(newCard));
 
-  closePopup(popupAddImage);
+  closePopup(constants.popupAddImage);
 }
 
 function openEditProfilePopup() {
-  inputName.value = profileName.textContent;
-  inputJob.value = profileJob.textContent;
+  constants.inputName.value = constants.profileName.textContent;
+  constants.inputJob.value = constants.profileJob.textContent;
 
-  openPopup(popupEditProfile);
+  openPopup(constants.popupEditProfile);
 }
 
 function openZoomImagePopup(name, link) {
-  zoomedImage.src = link;
-  zoomedImage.alt = name;
-  zoomedCaption.textContent = name;
+  constants.zoomedImage.src = link;
+  constants.zoomedImage.alt = name;
+  constants.zoomedCaption.textContent = name;
 
-  openPopup(popupZoomImage);
+  openPopup(constants.popupZoomImage);
 }
 
 // Opening profile edit popup
-profileEditBtn.addEventListener("click", () => {
+constants.profileEditBtn.addEventListener("click", () => {
   openEditProfilePopup();
   profileFormValidation.resetValidation();
 });
 
 // Opening add image popup
-cardAddBtn.addEventListener("click", () => {
-  openPopup(popupAddImage);
-  formAddImage.reset();
+constants.cardAddBtn.addEventListener("click", () => {
+  openPopup(constants.popupAddImage);
+  constants.formAddImage.reset();
   newCardFormValidation.resetValidation();
 });
 
 // Closing popup
-popupOverlays.forEach((item) => {
+constants.popupOverlays.forEach((item) => {
   item.addEventListener("click", (evt) => {
     if (
       evt.target.classList.contains("popup") ||
@@ -119,17 +111,5 @@ popupOverlays.forEach((item) => {
 });
 
 // Form submit events
-formEditProfile.addEventListener("submit", submitEditProfileForm);
-formAddImage.addEventListener("submit", submitAddImageForm);
-
-// Enabling validation
-const profileFormValidation = new FormValidator(
-  formEditProfile,
-  formValidationConfig
-);
-const newCardFormValidation = new FormValidator(
-  formAddImage,
-  formValidationConfig
-);
-profileFormValidation.enableValidation();
-newCardFormValidation.enableValidation();
+constants.formEditProfile.addEventListener("submit", submitEditProfileForm);
+constants.formAddImage.addEventListener("submit", submitAddImageForm);
