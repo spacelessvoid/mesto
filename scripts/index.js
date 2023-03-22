@@ -1,6 +1,9 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import * as constants from "./constants.js";
+import Popup from "./Popup.js";
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
 
 // Loading the cards from initial array
 constants.initialCards.forEach((item) => {
@@ -19,22 +22,35 @@ const newCardFormValidation = new FormValidator(
 profileFormValidation.enableValidation();
 newCardFormValidation.enableValidation();
 
-const closePopupOnEscapePress = (evt) => {
-  if (evt.key === "Escape") {
-    const popupOpened = document.querySelector(".popup_opened");
-    closePopup(popupOpened);
-  }
-};
+// Enable popup handler
+const popupEditProfile = new PopupWithForm(
+  "#popup-edit-profile",
+  submitEditProfileForm
+);
+popupEditProfile.setEventListeners();
 
-function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keydown", closePopupOnEscapePress);
-}
+const popupAddImage = new PopupWithForm("#popup-add-image", submitAddImageForm);
+popupAddImage.setEventListeners();
 
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", closePopupOnEscapePress);
-}
+const popupZoomImage = new PopupWithImage("#popup-zoom-image");
+popupZoomImage.setEventListeners();
+
+// const closePopupOnEscapePress = (evt) => {
+//   if (evt.key === "Escape") {
+//     const popupOpened = document.querySelector(".popup_opened");
+//     closePopup(popupOpened);
+//   }
+// };
+
+// function openPopup(popup) {
+//   popup.classList.add("popup_opened");
+//   document.addEventListener("keydown", closePopupOnEscapePress);
+// }
+
+// function closePopup(popup) {
+//   popup.classList.remove("popup_opened");
+//   document.removeEventListener("keydown", closePopupOnEscapePress);
+// }
 
 function createCard(data) {
   const cardElement = new Card(data, "#card-template", openZoomImagePopup);
@@ -53,7 +69,7 @@ function submitEditProfileForm(evt) {
   constants.profileName.textContent = constants.inputName.value;
   constants.profileJob.textContent = constants.inputJob.value;
 
-  closePopup(constants.popupEditProfile);
+  popupEditProfile.close();
 }
 
 // Submitting the add image popup
@@ -67,22 +83,18 @@ function submitAddImageForm(evt) {
 
   addCard(createCard(newCard));
 
-  closePopup(constants.popupAddImage);
+  popupAddImage.close();
 }
 
 function openEditProfilePopup() {
   constants.inputName.value = constants.profileName.textContent;
   constants.inputJob.value = constants.profileJob.textContent;
 
-  openPopup(constants.popupEditProfile);
+  popupEditProfile.open();
 }
 
 function openZoomImagePopup(name, link) {
-  constants.zoomedImage.src = link;
-  constants.zoomedImage.alt = name;
-  constants.zoomedCaption.textContent = name;
-
-  openPopup(constants.popupZoomImage);
+  popupZoomImage.open(name, link);
 }
 
 // Opening profile edit popup
@@ -93,13 +105,12 @@ constants.profileEditBtn.addEventListener("click", () => {
 
 // Opening add image popup
 constants.cardAddBtn.addEventListener("click", () => {
-  openPopup(constants.popupAddImage);
-  constants.formAddImage.reset();
+  popupAddImage.open();
   newCardFormValidation.resetValidation();
 });
 
 // Closing popup
-constants.popupOverlays.forEach((item) => {
+/* constants.popupOverlays.forEach((item) => {
   item.addEventListener("click", (evt) => {
     if (
       evt.target.classList.contains("popup") ||
@@ -108,8 +119,8 @@ constants.popupOverlays.forEach((item) => {
       closePopup(item);
     }
   });
-});
+}); */
 
 // Form submit events
-constants.formEditProfile.addEventListener("submit", submitEditProfileForm);
-constants.formAddImage.addEventListener("submit", submitAddImageForm);
+// constants.formEditProfile.addEventListener("submit", submitEditProfileForm);
+// constants.formAddImage.addEventListener("submit", submitAddImageForm);
