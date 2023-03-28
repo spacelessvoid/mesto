@@ -3,6 +3,7 @@ export default class Card {
     this._name = data.name;
     this._link = data.link;
     this._templateSelector = templateSelector;
+    // Passing the function that opens card image popup
     this._openPopupFunc = openPopupFunc;
   }
 

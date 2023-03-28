@@ -41,7 +41,5 @@ export const popupOverlays = document.querySelectorAll(".popup"),
   inputTitle = document.querySelector(".popup__text-input_type_title"),
   inputLink = document.querySelector(".popup__text-input_type_link"),
   profileEditBtn = document.querySelector(".profile__edit-btn"),
-  profileName = document.querySelector(".profile__name"),
-  profileJob = document.querySelector(".profile__job"),
   cardAddBtn = document.querySelector(".add-btn"),
   gallery = document.querySelector(".gallery");

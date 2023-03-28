@@ -2,7 +2,7 @@
   "name": "mesto",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/scripts/index.js",
+  "main": "index.js",
   "scripts": {
     "bemify": "css-to-bem-file-structure pages/index.css",
     "build": "webpack --mode production",
