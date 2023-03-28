@@ -12,12 +12,16 @@ const userInfo = new UserInfo({
   jobSelector: ".profile__job",
 });
 
+function createCard(data) {
+  const cardElement = new Card(data, "#card-template", openPopupZoomImage);
+  return cardElement.generateCard();
+}
+
 const userCards = new Section(
   {
     items: constants.initialCards,
     renderer: (card) => {
-      const cardElement = new Card(card, "#card-template", openPopupZoomImage);
-      userCards.addItem(cardElement.generateCard());
+      userCards.addItem(createCard(card));
     },
   },
   constants.gallery
@@ -45,8 +49,8 @@ newCardFormValidation.enableValidation();
 const popupEditProfile = new PopupWithForm(
   "#popup-edit-profile",
   // Submitting the profile edit popup
-  ({ name, job }) => {
-    userInfo.setUserInfo(name, job);
+  (inputData) => {
+    userInfo.setUserInfo(inputData);
     popupEditProfile.close();
   }
 );
@@ -55,17 +59,8 @@ popupEditProfile.setEventListeners();
 const popupAddImage = new PopupWithForm(
   "#popup-add-image",
   // Submitting the add image popup
-  ({ title, link }) => {
-    const cardElement = new Card(
-      {
-        name: title,
-        link: link,
-      },
-      "#card-template",
-      openPopupZoomImage
-    );
-    userCards.addItem(cardElement.generateCard());
-
+  ({ name, link }) => {
+    userCards.addItem(createCard({ name, link }));
     popupAddImage.close();
   }
 );
