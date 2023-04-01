@@ -49,8 +49,8 @@
     <div class="popup__container">
       <button class="popup__close button" type="button" aria-label="Закрыть всплывающее окно"></button>
 
+      <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" id="edit-profile" name="edit-profile" novalidate>
-        <h2 class="popup__title">Редактировать профиль</h2>
         <input class="popup__text-input popup__text-input_type_name" type="text" name="name" id="name-input"
           placeholder="Введите имя" minlength="2" maxlength="40" required>
         <span class="popup__input-error name-input-error"></span>
@@ -66,8 +66,8 @@
     <div class="popup__container">
       <button class="popup__close button" type="button" aria-label="Закрыть всплывающее окно"></button>
 
+      <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" id="add-image" name="add-image" novalidate>
-        <h2 class="popup__title">Новое место</h2>
         <input class="popup__text-input popup__text-input_type_title" type="text" name="name" id="title-input"
           placeholder="Название" minlength="2" maxlength="30" required>
         <span class="popup__input-error title-input-error"></span>
@@ -76,6 +76,17 @@
         <span class="popup__input-error link-input-error"></span>
         <button class="popup__button button" type="submit">Создать</button>
       </form>
+    </div>
+  </div>
+
+  <div class="popup" id="popup-confirm-delete">
+    <div class="popup__container">
+      <button class="popup__close button" type="button" aria-label="Закрыть всплывающее окно"></button>
+
+      <h2 class="popup__title">Вы уверены?</h2>
+      <div class="popup__form">
+        <button class="popup__button button" type="submit">Да</button>
+      </div>
     </div>
   </div>
 
