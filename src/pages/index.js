@@ -1,15 +1,17 @@
 import "./index.css";
 import * as constants from "../utils/constants.js";
+import Api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
-import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
+import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
-  jobSelector: ".profile__job",
+  aboutSelector: ".profile__job",
 });
 
 function createCard(data) {
@@ -75,9 +77,9 @@ function openPopupZoomImage(name, link) {
 
 // Opening profile edit popup
 
-function openPopupEditProfile({ name, job }) {
+function openPopupEditProfile({ name, about }) {
   constants.inputName.value = name;
-  constants.inputJob.value = job;
+  constants.inputAbout.value = about;
 
   popupEditProfile.open();
 }
