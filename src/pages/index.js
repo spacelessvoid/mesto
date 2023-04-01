@@ -12,6 +12,7 @@ import UserInfo from "../components/UserInfo.js";
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   aboutSelector: ".profile__job",
+  avatarSelector: ".profile__avatar",
 });
 
 function createCard(data) {
@@ -75,6 +76,12 @@ function openPopupZoomImage(name, link) {
   popupZoomImage.open(name, link);
 }
 
+const popupChangeAvatar = new PopupWithForm("#popup-change-avatar", (link) => {
+  userInfo.setUserAvatar(link);
+  popupChangeAvatar.close();
+});
+popupChangeAvatar.setEventListeners();
+
 // Opening profile edit popup
 
 function openPopupEditProfile({ name, about }) {
@@ -93,4 +100,9 @@ constants.profileEditBtn.addEventListener("click", () => {
 constants.cardAddBtn.addEventListener("click", () => {
   popupAddImage.open();
   newCardFormValidation.resetValidation();
+});
+
+// Opening change avatar popup
+constants.avatarChangeBtn.addEventListener("click", () => {
+  popupChangeAvatar.open();
 });

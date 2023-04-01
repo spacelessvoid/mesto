@@ -40,6 +40,7 @@ export const popupOverlays = document.querySelectorAll(".popup"),
   inputAbout = document.querySelector(".popup__text-input_type_job"),
   inputTitle = document.querySelector(".popup__text-input_type_title"),
   inputLink = document.querySelector(".popup__text-input_type_link"),
+  avatarChangeBtn = document.querySelector(".profile__avatar-container"),
   profileEditBtn = document.querySelector(".profile__edit-btn"),
   cardAddBtn = document.querySelector(".add-btn"),
   gallery = document.querySelector(".gallery");
