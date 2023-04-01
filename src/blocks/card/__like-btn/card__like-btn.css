@@ -1,10 +1,11 @@
 .card__like-btn {
-  min-height: 19px;
-  min-width: 22px;
+  height: 19px;
+  width: 22px;
   background-size: 22px 19px;
   background-position: center;
   background: url(../../../images/button-like-sprite.svg) 0 0;
   transition: opacity .5s;
+  grid-area: button;
 }
 
 .card__like-btn:hover {
