@@ -4,7 +4,6 @@ export default class Popup {
     this.openedClass = "popup_opened";
   }
 
-  //TODO Why this doesn't work with arrow function? ✅
   open() {
     this._popup.classList.add(this.openedClass);
     document.addEventListener("keydown", this._handleEscClose);
@@ -15,7 +14,6 @@ export default class Popup {
     document.removeEventListener("keydown", this._handleEscClose);
   }
 
-  //TODO And this doesn't work with function declaration? ✅
   _handleEscClose = (evt) => {
     if (evt.key === "Escape") {
       this.close(this._popup);

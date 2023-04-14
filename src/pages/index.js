@@ -9,6 +9,24 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 
+const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-64",
+  headers: {
+    authorization: "22f549e9-e0fd-461e-9588-c9d853933dcc",
+    "Content-Type": "application/json",
+  },
+});
+
+api
+  .getInitialCards("/cards")
+  .then((result) => {
+    // Rendering initial cards
+    userCards.renderItems(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   aboutSelector: ".profile__job",
@@ -22,16 +40,13 @@ function createCard(data) {
 
 const userCards = new Section(
   {
-    items: constants.initialCards,
+    // items: constants.initialCards,
     renderer: (card) => {
       userCards.addItem(createCard(card));
     },
   },
   constants.gallery
 );
-
-// Rendering initial cards
-userCards.renderItems();
 
 // Enabling validation
 
@@ -81,6 +96,9 @@ const popupChangeAvatar = new PopupWithForm("#popup-change-avatar", (link) => {
   popupChangeAvatar.close();
 });
 popupChangeAvatar.setEventListeners();
+
+const popupConfirmDelete = new PopupWithConfirmation("#popup-confirm-delete");
+popupConfirmDelete.setEventListeners();
 
 // Opening profile edit popup
 
