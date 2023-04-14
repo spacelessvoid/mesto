@@ -78,8 +78,15 @@ newCardFormValidation.enableValidation();
 const popupEditProfile = new PopupWithForm(
   "#popup-edit-profile",
   // Submitting the profile edit popup
-  (inputData) => {
-    userInfo.setUserInfo(inputData);
+  ({ name, about }) => {
+    api
+      .updateUserInfo({ name, about }, "/users/me")
+      .then(({ name, about }) => {
+        userInfo.setUserInfo({ name, about });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     popupEditProfile.close();
   }
 );
