@@ -1,24 +1,15 @@
 export default class Api {
   constructor(options) {
-    this.baseUrl = options.baseUrl;
-    this.authorization = options.headers.authorization;
-    this.contentType = options["headers"]["Content-Type"];
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
-  getInitialCards(link) {
-    return this.handleGet(link)
-		.then((res) => {
+  getContent(link) {
+    return fetch(this._baseUrl + link, {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) return res.json();
       return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  }
-
-  handleGet(link) {
-    return fetch(this.baseUrl + link, {
-      headers: {
-        authorization: this.authorization,
-        "Content-Type": this.contentType,
-      },
     });
   }
 }

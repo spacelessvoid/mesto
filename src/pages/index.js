@@ -17,21 +17,22 @@ const api = new Api({
   },
 });
 
-api
-  .getInitialCards("/cards")
-  .then((result) => {
-    // Rendering initial cards
-    userCards.renderItems(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   aboutSelector: ".profile__job",
   avatarSelector: ".profile__avatar",
 });
+
+// Fetching user profile data
+api
+  .getContent("/users/me")
+  .then(({ name, about, avatar }) => {
+    userInfo.setUserInfo({ name, about });
+    userInfo.setUserAvatar(avatar);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 function createCard(data) {
   const cardElement = new Card(data, "#card-template", openPopupZoomImage);
@@ -47,6 +48,16 @@ const userCards = new Section(
   },
   constants.gallery
 );
+
+// Rendering initial cards
+api
+  .getContent("/cards")
+  .then((result) => {
+    userCards.renderItems(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // Enabling validation
 
@@ -91,10 +102,13 @@ function openPopupZoomImage(name, link) {
   popupZoomImage.open(name, link);
 }
 
-const popupChangeAvatar = new PopupWithForm("#popup-change-avatar", (link) => {
-  userInfo.setUserAvatar(link);
-  popupChangeAvatar.close();
-});
+const popupChangeAvatar = new PopupWithForm(
+  "#popup-change-avatar",
+  ({ link }) => {
+    userInfo.setUserAvatar(link);
+    popupChangeAvatar.close();
+  }
+);
 popupChangeAvatar.setEventListeners();
 
 const popupConfirmDelete = new PopupWithConfirmation("#popup-confirm-delete");
