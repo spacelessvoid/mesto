@@ -4,8 +4,8 @@ export default class Api {
     this._headers = options.headers;
   }
 
-  getContent(link) {
-    return fetch(this._baseUrl + link, {
+  getInitialCards() {
+    return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
     }).then((res) => {
       if (res.ok) return res.json();
@@ -13,8 +13,17 @@ export default class Api {
     });
   }
 
-  updateUserInfo({ name, about }, link) {
-    return fetch(this._baseUrl + link, {
+  getUserInfo() {
+    return fetch(this._baseUrl + "/users/me", {
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) return res.json();
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
+
+  updateUserInfo({ name, about }) {
+    return fetch(this._baseUrl + "/users/me", {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ name, about }),

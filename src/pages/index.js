@@ -25,7 +25,7 @@ const userInfo = new UserInfo({
 
 // Fetching user profile data
 api
-  .getContent("/users/me")
+  .getUserInfo()
   .then(({ name, about, avatar }) => {
     userInfo.setUserInfo({ name, about });
     userInfo.setUserAvatar(avatar);
@@ -51,7 +51,7 @@ const userCards = new Section(
 
 // Rendering initial cards
 api
-  .getContent("/cards")
+  .getInitialCards()
   .then((result) => {
     userCards.renderItems(result);
   })
@@ -80,7 +80,7 @@ const popupEditProfile = new PopupWithForm(
   // Submitting the profile edit popup
   ({ name, about }) => {
     api
-      .updateUserInfo({ name, about }, "/users/me")
+      .updateUserInfo({ name, about })
       .then(({ name, about }) => {
         userInfo.setUserInfo({ name, about });
       })
