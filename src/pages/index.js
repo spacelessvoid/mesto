@@ -22,6 +22,7 @@ const userInfo = new UserInfo({
   aboutSelector: ".profile__job",
   avatarSelector: ".profile__avatar",
 });
+// Variable for user ID to be set with one API call
 let userID;
 
 // Fetching user profile data
@@ -37,17 +38,23 @@ api
   });
 
 function createCard(data) {
-  const cardElement = new Card(
+  const cardElement = new Card({
     data,
-    "#card-template",
-    openPopupZoomImage,
-    openConfirmationPopup
-  );
+    templateSelector: "#card-template",
+    openPopupHandler: openPopupZoomImage,
+    openDeleteConfirmation: openConfirmationPopup,
+    toggleCardLikeHandler: toggleCardLike,
+  });
   return cardElement.generateCard({
+    cardID: data._id,
     likesCount: data.likes.length,
     authorID: data.owner._id,
     userID,
   });
+}
+
+function toggleCardLike() {
+  console.log(hello);
 }
 
 const userCards = new Section(
@@ -139,17 +146,22 @@ popupChangeAvatar.setEventListeners();
 const popupConfirmDelete = new PopupWithConfirmation(
   "#popup-confirm-delete",
   (deletedElement, deleteHandler) => {
-    console.log(deletedElement);
-    deleteHandler();
+    api
+      .deleteCard(deletedElement.id)
+      .then(() => {
+        deleteHandler();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     popupConfirmDelete.close();
   }
 );
 popupConfirmDelete.setEventListeners();
-// delete card candler
+// delete card handler
 function openConfirmationPopup(deletedElement, deleteHandler) {
   popupConfirmDelete.open(deletedElement, deleteHandler);
 }
-// submit delete confirmation
 
 // Opening profile edit popup
 
