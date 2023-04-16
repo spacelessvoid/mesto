@@ -20,7 +20,7 @@
   <main class="content">
     <section class="profile" aria-label="Профиль пользователя">
       <div class="profile__avatar-container">
-        <img src="<%=require('./images/profile-pic.jpg')%>" alt="Фото пользователя" class="profile__avatar">
+        <img src="" alt="Фото пользователя" class="profile__avatar">
       </div>
       <div class="profile__info">
         <h1 class="profile__name"></h1>
@@ -98,7 +98,7 @@
 
       <h2 class="popup__title">Обновить аватар</h2>
       <form class="popup__form" id="change-avatar" name="change-avatar" novalidate>
-        <input class="popup__text-input popup__text-input_type_link" type="url" name="link" id="avatar-input"
+        <input class="popup__text-input popup__text-input_type_avatar" type="url" name="avatar" id="avatar-input"
           placeholder="Ссылка на новый аватар" required>
         <span class="popup__input-error avatar-input-error"></span>
         <button class="popup__button button" type="submit">Сохранить</button>

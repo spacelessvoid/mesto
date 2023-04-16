@@ -36,6 +36,7 @@ export const formValidationConfig = {
 export const popupOverlays = document.querySelectorAll(".popup"),
   formEditProfile = document.querySelector("#edit-profile"),
   formAddImage = document.querySelector("#add-image"),
+  formChangeAvatar = document.querySelector("#change-avatar"),
   inputName = document.querySelector(".popup__text-input_type_name"),
   inputAbout = document.querySelector(".popup__text-input_type_job"),
   inputTitle = document.querySelector(".popup__text-input_type_title"),

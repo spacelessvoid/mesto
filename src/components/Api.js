@@ -54,7 +54,18 @@ export default class Api {
     });
   }
 
-	addLike(cardID) {
+  updateUserAvatar(avatar) {
+    return fetch(this._baseUrl + "/users/me/avatar", {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify(avatar),
+    }).then((res) => {
+      if (res.ok) return res.json();
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
+
+  addLike(cardID) {
     return fetch(this._baseUrl + `/cards/likes/${cardID}`, {
       method: "PUT",
       headers: this._headers,
@@ -64,7 +75,7 @@ export default class Api {
     });
   }
 
-	removeLike(cardID) {
+  removeLike(cardID) {
     return fetch(this._baseUrl + `/cards/likes/${cardID}`, {
       method: "DELETE",
       headers: this._headers,

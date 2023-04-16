@@ -92,7 +92,6 @@ api
   .getInitialCards()
   .then((result) => {
     userCards.renderItems(result);
-    console.log("🚀 ~ file: index.js:76 ~ .then ~ result:", result);
   })
   .catch((err) => {
     console.log(err);
@@ -111,6 +110,12 @@ const newCardFormValidation = new FormValidator(
   constants.formValidationConfig
 );
 newCardFormValidation.enableValidation();
+
+const changeAvatarFormValidation = new FormValidator(
+  constants.formChangeAvatar,
+  constants.formValidationConfig
+);
+changeAvatarFormValidation.enableValidation();
 
 // Enabling popup handlers
 
@@ -157,8 +162,15 @@ function openPopupZoomImage(name, link) {
 
 const popupChangeAvatar = new PopupWithForm(
   "#popup-change-avatar",
-  ({ link }) => {
-    userInfo.setUserAvatar(link);
+  ({ avatar }) => {
+    api
+      .updateUserAvatar({ avatar })
+      .then(({ avatar }) => {
+        userInfo.setUserAvatar(avatar);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     popupChangeAvatar.close();
   }
 );
@@ -207,4 +219,5 @@ constants.cardAddBtn.addEventListener("click", () => {
 // Opening change avatar popup
 constants.avatarChangeBtn.addEventListener("click", () => {
   popupChangeAvatar.open();
+  changeAvatarFormValidation.resetValidation();
 });
