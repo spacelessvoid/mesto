@@ -29,7 +29,7 @@ export default class Card {
     this._element = null;
   };
 
-  _toggleLike() {
+  _toggleLike = () => {
     if (!this._likeBtn.classList.contains("card__like-btn_active")) {
       this._setLikesCount(1);
     } else {
@@ -57,7 +57,7 @@ export default class Card {
     });
 
     this._likeBtn.addEventListener("click", () => {
-      this._toggleLike();
+      this._toggleLikeHandler(this._element, this._toggleLike);
     });
   }
 

@@ -43,7 +43,7 @@ function createCard(data) {
     templateSelector: "#card-template",
     openPopupHandler: openPopupZoomImage,
     openDeleteConfirmation: openConfirmationPopup,
-    toggleCardLikeHandler: toggleCardLike,
+    toggleLikeHandler: toggleCardLike,
   });
   return cardElement.generateCard({
     cardID: data._id,
@@ -53,8 +53,9 @@ function createCard(data) {
   });
 }
 
-function toggleCardLike() {
-  console.log(hello);
+function toggleCardLike(thisCard, likeHandler) {
+  console.log(thisCard.id);
+  likeHandler();
 }
 
 const userCards = new Section(
