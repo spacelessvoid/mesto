@@ -11,6 +11,20 @@ export default class PopupWithConfirmation extends Popup {
     this._deletedElement = deletedElement;
     this._deleteHandler = deleteHandler;
     super.open();
+
+    document.addEventListener("keydown", this._handleEnterSubmit);
+  };
+
+  close() {
+    super.close();
+    
+    document.removeEventListener("keydown", this._handleEnterSubmit);
+  }
+
+  _handleEnterSubmit = (evt) => {
+    if (evt.key === "Enter") {
+      this._submitHandler(this._deletedElement, this._deleteHandler);
+    }
   };
 
   setEventListeners() {
