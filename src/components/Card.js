@@ -29,22 +29,14 @@ export default class Card {
     this._element = null;
   };
 
-  _toggleLike = () => {
-    if (!this._likeBtn.classList.contains("card__like-btn_active")) {
-      this._setLikesCount(1);
-    } else {
-      this._setLikesCount(-1);
-    }
+  _toggleLike = (count) => {
+    this._setLikesCount(count);
 
     this._likeBtn.classList.toggle("card__like-btn_active");
-  }
+  };
 
   _setLikesCount(count) {
-    let likes = parseInt(
-      this._element.querySelector(".card__like-count").textContent
-    );
-    likes += count;
-    this._element.querySelector(".card__like-count").textContent = likes;
+    this._element.querySelector(".card__like-count").textContent = count;
   }
 
   _setEventListeners() {
@@ -61,7 +53,7 @@ export default class Card {
     });
   }
 
-  generateCard({ cardID, likesCount, authorID, userID }) {
+  generateCard({ cardID, likesArr, authorID, userID }) {
     this._element = this._getTemplate();
     this._title = this._element.querySelector(".card__place");
     this._image = this._element.querySelector(".card__image");
@@ -69,7 +61,11 @@ export default class Card {
     this._deleteBtn = this._element.querySelector(".card__delete-btn");
 
     this._setEventListeners();
-    this._setLikesCount(likesCount);
+    this._setLikesCount(likesArr.length);
+
+    if (likesArr.find((user) => user._id === userID)) {
+      this._likeBtn.classList.add("card__like-btn_active");
+    }
 
     if (userID !== authorID) {
       this._deleteBtn.remove();

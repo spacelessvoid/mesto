@@ -47,15 +47,34 @@ function createCard(data) {
   });
   return cardElement.generateCard({
     cardID: data._id,
-    likesCount: data.likes.length,
+    likesArr: data.likes,
     authorID: data.owner._id,
     userID,
   });
 }
 
 function toggleCardLike(thisCard, likeHandler) {
-  console.log(thisCard.id);
-  likeHandler();
+  const likeBtn = thisCard.querySelector(".card__like-btn");
+
+  if (!likeBtn.classList.contains("card__like-btn_active")) {
+    api
+      .addLike(thisCard.id)
+      .then((result) => {
+        likeHandler(result.likes.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    api
+      .removeLike(thisCard.id)
+      .then((result) => {
+        likeHandler(result.likes.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 
 const userCards = new Section(
@@ -73,6 +92,7 @@ api
   .getInitialCards()
   .then((result) => {
     userCards.renderItems(result);
+    console.log("🚀 ~ file: index.js:76 ~ .then ~ result:", result);
   })
   .catch((err) => {
     console.log(err);
