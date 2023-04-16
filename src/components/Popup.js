@@ -20,6 +20,16 @@ export default class Popup {
     }
   };
 
+  renderLoading(isLoading, initialText) {
+    this._buttonText = this._popup.querySelector(".popup__button");
+
+    if (isLoading) {
+      this._buttonText.textContent = "Сохранение...";
+    } else {
+      this._buttonText.textContent = initialText;
+    }
+  }
+
   setEventListeners() {
     this._popup.addEventListener("click", (evt) => {
       if (

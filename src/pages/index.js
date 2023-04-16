@@ -123,6 +123,7 @@ const popupEditProfile = new PopupWithForm(
   "#popup-edit-profile",
   // Submitting the profile edit popup
   (inputData) => {
+    popupEditProfile.renderLoading(true);
     api
       .updateUserInfo(inputData)
       .then((inputData) => {
@@ -130,8 +131,11 @@ const popupEditProfile = new PopupWithForm(
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        popupEditProfile.close();
+        popupEditProfile.renderLoading(false, "Сохранить");
       });
-    popupEditProfile.close();
   }
 );
 popupEditProfile.setEventListeners();
@@ -140,6 +144,7 @@ const popupAddImage = new PopupWithForm(
   "#popup-add-image",
   // Submitting the add image popup
   (inputData) => {
+    popupAddImage.renderLoading(true);
     api
       .addNewCard(inputData)
       .then((inputData) => {
@@ -147,8 +152,11 @@ const popupAddImage = new PopupWithForm(
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        popupAddImage.close();
+        popupAddImage.renderLoading(false, "Создать");
       });
-    popupAddImage.close();
   }
 );
 popupAddImage.setEventListeners();
@@ -163,6 +171,7 @@ function openPopupZoomImage(name, link) {
 const popupChangeAvatar = new PopupWithForm(
   "#popup-change-avatar",
   ({ avatar }) => {
+    popupChangeAvatar.renderLoading(true);
     api
       .updateUserAvatar({ avatar })
       .then(({ avatar }) => {
@@ -170,8 +179,11 @@ const popupChangeAvatar = new PopupWithForm(
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        popupChangeAvatar.close();
+        popupChangeAvatar.renderLoading(false, "Сохранить");
       });
-    popupChangeAvatar.close();
   }
 );
 popupChangeAvatar.setEventListeners();
@@ -179,6 +191,7 @@ popupChangeAvatar.setEventListeners();
 const popupConfirmDelete = new PopupWithConfirmation(
   "#popup-confirm-delete",
   (deletedElement, deleteHandler) => {
+    popupConfirmDelete.renderLoading(true);
     api
       .deleteCard(deletedElement.id)
       .then(() => {
@@ -186,8 +199,11 @@ const popupConfirmDelete = new PopupWithConfirmation(
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        popupConfirmDelete.close();
+        popupConfirmDelete.renderLoading(false, "Да, удалить карточку");
       });
-    popupConfirmDelete.close();
   }
 );
 popupConfirmDelete.setEventListeners();
