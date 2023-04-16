@@ -3,9 +3,9 @@ import * as constants from "../utils/constants.js";
 import Api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
-import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 
@@ -22,21 +22,32 @@ const userInfo = new UserInfo({
   aboutSelector: ".profile__job",
   avatarSelector: ".profile__avatar",
 });
+let userID;
 
 // Fetching user profile data
 api
   .getUserInfo()
-  .then(({ name, about, avatar }) => {
+  .then(({ name, about, avatar, _id }) => {
     userInfo.setUserInfo({ name, about });
     userInfo.setUserAvatar(avatar);
+    userID = _id;
   })
   .catch((err) => {
     console.log(err);
   });
 
 function createCard(data) {
-  const cardElement = new Card(data, "#card-template", openPopupZoomImage);
-  return cardElement.generateCard();
+  const cardElement = new Card(
+    data,
+    "#card-template",
+    openPopupZoomImage,
+    openConfirmationPopup
+  );
+  return cardElement.generateCard({
+    likesCount: data.likes.length,
+    authorID: data.owner._id,
+    userID,
+  });
 }
 
 const userCards = new Section(
@@ -78,11 +89,11 @@ newCardFormValidation.enableValidation();
 const popupEditProfile = new PopupWithForm(
   "#popup-edit-profile",
   // Submitting the profile edit popup
-  ({ name, about }) => {
+  (inputData) => {
     api
-      .updateUserInfo({ name, about })
-      .then(({ name, about }) => {
-        userInfo.setUserInfo({ name, about });
+      .updateUserInfo(inputData)
+      .then((inputData) => {
+        userInfo.setUserInfo(inputData);
       })
       .catch((err) => {
         console.log(err);
@@ -95,8 +106,15 @@ popupEditProfile.setEventListeners();
 const popupAddImage = new PopupWithForm(
   "#popup-add-image",
   // Submitting the add image popup
-  ({ name, link }) => {
-    userCards.addItem(createCard({ name, link }));
+  (inputData) => {
+    api
+      .addNewCard(inputData)
+      .then((inputData) => {
+        userCards.addItem(createCard(inputData));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     popupAddImage.close();
   }
 );
@@ -118,8 +136,20 @@ const popupChangeAvatar = new PopupWithForm(
 );
 popupChangeAvatar.setEventListeners();
 
-const popupConfirmDelete = new PopupWithConfirmation("#popup-confirm-delete");
+const popupConfirmDelete = new PopupWithConfirmation(
+  "#popup-confirm-delete",
+  (deletedElement, deleteHandler) => {
+    console.log(deletedElement);
+    deleteHandler();
+    popupConfirmDelete.close();
+  }
+);
 popupConfirmDelete.setEventListeners();
+// delete card candler
+function openConfirmationPopup(deletedElement, deleteHandler) {
+  popupConfirmDelete.open(deletedElement, deleteHandler);
+}
+// submit delete confirmation
 
 // Opening profile edit popup
 

@@ -1,10 +1,12 @@
 export default class Card {
-  constructor(data, templateSelector, openPopupFunc) {
+  constructor(data, templateSelector, openPopupHandler, openDeleteConfirmation) {
     this._name = data.name;
     this._link = data.link;
     this._templateSelector = templateSelector;
     // Passing the function that opens card image popup
-    this._openPopupFunc = openPopupFunc;
+    this._openPopupHandler = openPopupHandler;
+    // Passing the function that opens delete confirmation
+    this._openDeleteConfirmation = openDeleteConfirmation;
   }
 
   _getTemplate() {
@@ -14,22 +16,37 @@ export default class Card {
       .querySelector(".card");
   }
 
-  _deleteCard() {
+  _deleteCard = () => {
     this._element.remove();
     this._element = null;
   }
 
   _toggleCardLike() {
+    if (!this._likeBtn.classList.contains("card__like-btn_active")) {
+      this._setLikesCount(1);
+    } else {
+      this._setLikesCount(-1);
+    }
+
     this._likeBtn.classList.toggle("card__like-btn_active");
+  }
+
+  _setLikesCount(count) {
+    let likes = parseInt(
+      this._element.querySelector(".card__like-count").textContent
+    );
+    likes += count;
+    this._element.querySelector(".card__like-count").textContent = likes;
   }
 
   _setEventListeners() {
     this._image.addEventListener("click", () => {
-      this._openPopupFunc(this._name, this._link);
+      this._openPopupHandler(this._name, this._link);
     });
 
     this._deleteBtn.addEventListener("click", () => {
-      this._deleteCard();
+      // this._deleteCard();
+      this._openDeleteConfirmation(this._element, this._deleteCard);
     });
 
     this._likeBtn.addEventListener("click", () => {
@@ -37,7 +54,7 @@ export default class Card {
     });
   }
 
-  generateCard() {
+  generateCard({ likesCount, authorID, userID }) {
     this._element = this._getTemplate();
     this._title = this._element.querySelector(".card__place");
     this._image = this._element.querySelector(".card__image");
@@ -45,6 +62,12 @@ export default class Card {
     this._deleteBtn = this._element.querySelector(".card__delete-btn");
 
     this._setEventListeners();
+    this._setLikesCount(likesCount);
+
+    if (userID !== authorID) {
+      this._deleteBtn.remove();
+      this._deleteBtn = null;
+    }
 
     this._title.textContent = this._name;
     this._image.alt = this._name;
