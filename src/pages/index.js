@@ -28,10 +28,9 @@ let userID;
 // Fetching user profile data
 api
   .getUserInfo()
-  .then(({ name, about, avatar, _id }) => {
+  .then(({ name, about, avatar }) => {
     userInfo.setUserInfo({ name, about });
     userInfo.setUserAvatar(avatar);
-    userID = _id;
   })
   .catch((err) => {
     console.log(err);
@@ -79,7 +78,6 @@ function toggleCardLike(thisCard, likeHandler) {
 
 const userCards = new Section(
   {
-    // items: constants.initialCards,
     renderer: (card) => {
       userCards.addItem(createCard(card));
     },
@@ -88,10 +86,10 @@ const userCards = new Section(
 );
 
 // Rendering initial cards
-api
-  .getInitialCards()
+Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then((result) => {
-    userCards.renderItems(result);
+    userID = result[0]["_id"];
+    userCards.renderItems(result[1].reverse());
   })
   .catch((err) => {
     console.log(err);
@@ -128,12 +126,12 @@ const popupEditProfile = new PopupWithForm(
       .updateUserInfo(inputData)
       .then((inputData) => {
         userInfo.setUserInfo(inputData);
+        popupEditProfile.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        popupEditProfile.close();
         popupEditProfile.renderLoading(false, "Сохранить");
       });
   }
@@ -149,12 +147,12 @@ const popupAddImage = new PopupWithForm(
       .addNewCard(inputData)
       .then((inputData) => {
         userCards.addItem(createCard(inputData));
+        popupAddImage.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        popupAddImage.close();
         popupAddImage.renderLoading(false, "Создать");
       });
   }
@@ -176,12 +174,12 @@ const popupChangeAvatar = new PopupWithForm(
       .updateUserAvatar({ avatar })
       .then(({ avatar }) => {
         userInfo.setUserAvatar(avatar);
+        popupChangeAvatar.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        popupChangeAvatar.close();
         popupChangeAvatar.renderLoading(false, "Сохранить");
       });
   }
@@ -196,12 +194,12 @@ const popupConfirmDelete = new PopupWithConfirmation(
       .deleteCard(deletedElement.id)
       .then(() => {
         deleteHandler();
+        popupConfirmDelete.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        popupConfirmDelete.close();
         popupConfirmDelete.renderLoading(false, "Да, удалить карточку");
       });
   }
