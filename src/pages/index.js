@@ -22,19 +22,9 @@ const userInfo = new UserInfo({
   aboutSelector: ".profile__job",
   avatarSelector: ".profile__avatar",
 });
+
 // Variable for user ID to be set with one API call
 let userID;
-
-// Fetching user profile data
-api
-  .getUserInfo()
-  .then(({ name, about, avatar }) => {
-    userInfo.setUserInfo({ name, about });
-    userInfo.setUserAvatar(avatar);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 function createCard(data) {
   const cardElement = new Card({
@@ -85,10 +75,17 @@ const userCards = new Section(
   constants.gallery
 );
 
-// Rendering initial cards
-Promise.all([api.getUserInfo(), api.getInitialCards()])
+Promise.all([
+  // Fetching user profile data
+  api.getUserInfo(),
+  // Fetching initial cards
+  api.getInitialCards(),
+])
   .then((result) => {
+    userInfo.setUserInfo(result[0]);
+    userInfo.setUserAvatar(result[0]);
     userID = result[0]["_id"];
+
     userCards.renderItems(result[1].reverse());
   })
   .catch((err) => {
@@ -173,7 +170,7 @@ const popupChangeAvatar = new PopupWithForm(
     api
       .updateUserAvatar({ avatar })
       .then(({ avatar }) => {
-        userInfo.setUserAvatar(avatar);
+        userInfo.setUserAvatar({ avatar });
         popupChangeAvatar.close();
       })
       .catch((err) => {
